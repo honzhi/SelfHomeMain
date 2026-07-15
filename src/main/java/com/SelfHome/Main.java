@@ -130,9 +130,9 @@ public class Main extends JavaPlugin implements PluginMessageListener {
                     || inv instanceof TrustGui
                     || inv instanceof VisitGui
                     ) {
-                    p.sendMessage("§a§l§m--------------" + Variable.Prefix + "§a§l§m--------------");
+                    p.sendMessage("搂a搂l搂m--------------" + Variable.Prefix + "搂a搂l搂m--------------");
                     p.sendMessage(Variable.Lang_YML.getString("CloseGuiWhenPluginReload"));
-                    p.sendMessage("§a§l§m--------------" + Variable.Prefix + "§a§l§m--------------");
+                    p.sendMessage("搂a搂l搂m--------------" + Variable.Prefix + "搂a搂l搂m--------------");
                     p.closeInventory();
                 }
             }
@@ -325,8 +325,6 @@ public class Main extends JavaPlugin implements PluginMessageListener {
         init.init();
 
 
-        Bukkit.getConsoleSender().sendMessage("§7[SelfHomeMain] §aAuthor - Tencent - QQ :  §d1242839141");
-        Bukkit.getConsoleSender().sendMessage("§7[SelfHomeMain] §aTencent - Group : §d777509868");
     }
 
     public static void init() {
@@ -545,13 +543,13 @@ public class Main extends JavaPlugin implements PluginMessageListener {
                     String[] somedata = msgin.readUTF().split(",");
                     if (somedata[0].equalsIgnoreCase("waitDelayToHome")) {
                         if (JavaPlugin.getConfig().getBoolean("Debug")) {
-                            JavaPlugin.getLogger().info("[调试]:收到延时回家数据包:" + somedata[1] + "," + somedata[2]);
+                            JavaPlugin.getLogger().info("[璋冭瘯]:鏀跺埌寤舵椂鍥炲鏁版嵁鍖?" + somedata[1] + "," + somedata[2]);
                         }
 
                         Variable.wait_to_spawn_home.put(somedata[1], somedata[2]);
                     } else if (somedata[0].equalsIgnoreCase("waitToCommand")) {
                         if (JavaPlugin.getConfig().getBoolean("Debug")) {
-                            JavaPlugin.getLogger().info("[调试]:收到延时执行指令数据包:" + somedata[1] + "," + somedata[2]);
+                            JavaPlugin.getLogger().info("[璋冭瘯]:鏀跺埌寤舵椂鎵ц鎸囦护鏁版嵁鍖?" + somedata[1] + "," + somedata[2]);
                         }
 
                         Variable.wait_to_command.put(somedata[1], somedata[2]);

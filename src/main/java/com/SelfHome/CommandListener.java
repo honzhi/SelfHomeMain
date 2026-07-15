@@ -30,6 +30,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
@@ -1627,21 +1629,22 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-1").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-1").get(i)).split(",");
+                            String cleanCmd = str.length > 1 ? str[1].replaceAll("\u00A7.", "") : "";
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
-                                    TextComponent e1 = new TextComponent(str[0]);
+                                    Component msg = LegacyComponentSerializer.legacySection().deserialize(str[0]);
                                     if (!str[0].contains("下一")
                                         && !str[0].contains("第一")
                                         && !str[0].contains("First")
                                         && !str[0].contains("Next")
                                         && !str[0].contains("上一")) {
-                                        e1.setClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, str[1]));
+                                        msg = msg.clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand(cleanCmd));
                                     } else {
-                                        e1.setClickEvent(new ClickEvent(Action.RUN_COMMAND, str[1]));
+                                        msg = msg.clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand(cleanCmd));
                                     }
 
-                                    p.spigot().sendMessage(e1);
+                                    p.sendMessage(msg);
                                 }
                             }
 
@@ -1655,7 +1658,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-2").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-2").get(i)).split(",");
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
                                     TextComponent e1 = new TextComponent(str[0]);
                                     if (!str[0].contains("下一")
@@ -1682,7 +1685,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-3").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-3").get(i)).split(",");
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
                                     TextComponent e1 = new TextComponent(str[0]);
                                     if (!str[0].contains("下一")
@@ -1709,7 +1712,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-4").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-4").get(i)).split(",");
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
                                     TextComponent e1 = new TextComponent(str[0]);
                                     if (!str[0].contains("下一")
@@ -1736,7 +1739,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-5").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-5").get(i)).split(",");
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
                                     TextComponent e1 = new TextComponent(str[0]);
                                     if (!str[0].contains("下一")
@@ -1763,7 +1766,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             for (int i = 0; i < Variable.Lang_YML.getStringList("Help-6").size(); i++) {
                                 String[] str = ((String)Variable.Lang_YML.getStringList("Help-6").get(i)).split(",");
                                 if (Variable.has_no_click_message) {
-                                    p.sendMessage(str[0]);
+                                    p.sendMessage(LegacyComponentSerializer.legacySection().deserialize(str[0]));
                                 } else {
                                     TextComponent e1 = new TextComponent(str[0]);
                                     if (!str[0].contains("下一")
