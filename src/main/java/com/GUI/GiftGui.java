@@ -5,7 +5,6 @@ import com.SelfHome.Variable;
 import com.Util.Home;
 import com.Util.HomeAPI;
 import com.comphenix.protocol.utility.StreamSerializer;
-import java.io.IOException;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -35,7 +34,7 @@ public class GiftGui implements InventoryHolder {
                                 i = ss.deserializeItemStack(str);
                             } catch (IllegalArgumentException e) {
                                 continue;
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 continue;
                             }
 

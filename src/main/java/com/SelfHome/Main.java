@@ -44,7 +44,6 @@ import com.Listeners.WorldInitListener;
 import com.Listeners.WorldLoadListener;
 import com.PlaceHolder.API;
 import com.Util.ConfigUpdate;
-import com.Util.HikariCPUtils;
 import com.Util.MySQL;
 import com.Util.Util;
 import com.Util.WaitToLoad;
@@ -459,7 +458,7 @@ public class Main extends JavaPlugin implements PluginMessageListener {
         if (JavaPlugin.getConfig().getBoolean("BungeeCord")) {
             Bukkit.getConsoleSender().sendMessage(Variable.Lang_YML.getString("EnableBungeeCord"));
             Variable.bungee = true;
-            HikariCPUtils.setSqlConnectionPool();
+            /* excluded HikariCPUtils */
             if (JavaPlugin.getConfig().getBoolean("DisableFunctionButTeleport")) {
                 Bukkit.getConsoleSender().sendMessage(Variable.Lang_YML.getString("DisableFunctionButTeleport"));
             }

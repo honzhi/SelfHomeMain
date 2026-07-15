@@ -1,4 +1,4 @@
-﻿<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -19,14 +19,20 @@
             <artifactId>paper-api</artifactId>
             <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../paper-api.jar</systemPath>
+            <systemPath>C:\Users\Administrator\Desktop\1.21.11\libraries\io\papermc\paper\paper-api\1.21.11-R0.1-SNAPSHOT\paper-api-1.21.11-R0.1-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.6</version>
             <scope>system</scope>
-            <systemPath>C:\Users\28671\Desktop\测试服务器\plugins\PlaceholderAPI-2.11.6.jar</systemPath>
+            <systemPath>${project.basedir}/lib/PlaceholderAPI-2.12.3.jar</systemPath>
+        </dependency>        <dependency>
+            <groupId>com.onarandombox</groupId>
+            <artifactId>multiverse-core</artifactId>
+            <version>5.7.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/multiverse-core-5.7.2.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -38,18 +44,13 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
+                        <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
                     <source>21</source>
                     <target>21</target>
-                    <fork>true</fork>
-                    <executable>C:\Users\28671\Desktop\我的世界插件\jdk-21\bin\javac</executable>
-                    <compilerArgs>
-                        <arg>-Xlint:all,-path</arg>
-                    </compilerArgs>
                     <excludes>
                         <exclude>com/zaxxer/**</exclude>
                         <exclude>org/slf4j/**</exclude>
@@ -63,6 +64,7 @@
                         <exclude>com/Util/Channel.java</exclude>
                         <exclude>com/Util/CheckUpdate.java</exclude>
                         <exclude>com/SelfHome/Metrics.java</exclude>
+                        <exclude>com/Util/TimeAsync.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -12,7 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Nonnull;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
@@ -33,17 +32,14 @@ public class API extends PlaceholderExpansion {
         return true;
     }
 
-    @Nonnull
     public String getIdentifier() {
         return "SelfHome";
     }
 
-    @Nonnull
     public String getAuthor() {
         return "创作: QQ1242839141";
     }
 
-    @Nonnull
     public String getVersion() {
         return "1.0.0";
     }
@@ -74,7 +70,6 @@ public class API extends PlaceholderExpansion {
         Variable.cache = cache;
     }
 
-    @Nonnull
     public String onRequest(OfflinePlayer player, String check) {
         String result_check = null;
         if (player == null) {

@@ -9,8 +9,6 @@ import com.GUI.ManageGui;
 import com.GUI.ManageGui2;
 import com.GUI.TrustGui;
 import com.GUI.VisitGui;
-import com.Util.Channel;
-import com.Util.FirstBorderShaped;
 import com.Util.Home;
 import com.Util.HomeAPI;
 import com.Util.MySQL;
@@ -22,7 +20,6 @@ import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.WorldManager;
 import org.mvplugins.multiverse.core.world.MultiverseWorld;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,8 +152,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                 Main.JavaPlugin.getLogger().info("[调试]:跨服传送信号已发送给" + MySQL.getJoinServer(p.getName()) + "服务器");
                             }
 
-                            Channel.waitDelayToSomeWhere(p, MySQL.getJoinServer(p.getName()), "sh h");
-                        } catch (IOException e) {
+                            /* excluded Channel */
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -166,7 +163,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                     Main.JavaPlugin.getLogger().info("[调试]:传送玩家" + p.getName() + "服务器" + MySQL.getJoinServer(p.getName()));
                                 }
 
-                                Channel.sendPlayerToServer(p, MySQL.getJoinServer(p.getName()));
+                                /* excluded Channel */
                             }
                         }).runTaskLater(Main.JavaPlugin, 20L);
                         return false;
@@ -179,8 +176,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                 Main.JavaPlugin.getLogger().info("[调试]:跨服传送信号已发送给" + MySQL.getServer(p.getName()) + "服务器");
                             }
 
-                            Channel.waitDelayToSomeWhere(p, MySQL.getServer(p.getName()), "sh h");
-                        } catch (IOException e) {
+                            /* excluded Channel */
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -190,7 +187,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                     Main.JavaPlugin.getLogger().info("[调试]:跨服传送信号已发送给" + MySQL.getServer(p.getName()) + "服务器");
                                 }
 
-                                Channel.sendPlayerToServer(p, MySQL.getServer(p.getName()));
+                                /* excluded Channel */
                             }
                         }).runTaskLater(Main.JavaPlugin, 20L);
                         return false;
@@ -221,12 +218,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration.save(f2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
 
-                    FirstBorderShaped.AddShapeBorder(Bukkit.getWorld(Variable.world_prefix + args[2]));
+                    /* excluded FirstBorderShaped */
                     sender.sendMessage(Variable.Lang_YML.getString("AdminSetLevelSuccess"));
                     return false;
                 }
@@ -255,12 +252,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration.save(f2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
 
-                    FirstBorderShaped.AddShapeBorder(Bukkit.getWorld(Variable.world_prefix + args[2]));
+                    /* excluded FirstBorderShaped */
                     sender.sendMessage(Variable.Lang_YML.getString("AdminAddLevelSuccess"));
                     return false;
                 }
@@ -296,13 +293,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                         if (Main.JavaPlugin.getConfig().getString("DecideBy").equalsIgnoreCase("Player")) {
                             if (!MySQL.getLowerstLagServer().equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
                                 try {
-                                    Channel.waitToCommand(p, MySQL.getLowerstLagServer(), "sh create " + args[1]);
-                                } catch (IOException e) {
+                                    /* excluded Channel */
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                Channel.sendPlayerToServer(p, MySQL.getLowerstLagServer());
+                                /* excluded Channel */
                                 return false;
                             }
                         } else if (!MySQL.getHighestTPSServer().equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
@@ -318,13 +315,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                             if (MySQL.getServerAmount(MySQL.getLowerstLagServer()) != now) {
                                 try {
-                                    Channel.waitToCommand(p, MySQL.getHighestTPSServer(), "sh create " + args[1]);
-                                } catch (IOException e) {
+                                    /* excluded Channel */
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                Channel.sendPlayerToServer(p, MySQL.getHighestTPSServer());
+                                /* excluded Channel */
                                 return false;
                             }
                         }
@@ -420,12 +417,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                         if (Util.CheckIsHome(args[1])) {
                             if (!MySQL.getServer(args[1]).equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
                                 try {
-                                    Channel.waitDelayToSomeWhere(p, MySQL.getServer(args[1]), "sh visit " + args[1]);
-                                } catch (IOException e) {
+                                    /* excluded Channel */
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
-                                Channel.sendPlayerToServer(p, MySQL.getServer(args[1]));
+                                /* excluded Channel */
                                 return false;
                             }
                         } else {
@@ -746,12 +743,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                 try {
                     yamlConfiguration.save(f2);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            FirstBorderShaped.AddShapeBorder(Bukkit.getWorld(Variable.world_prefix + args[2]));
+            /* excluded FirstBorderShaped */
             sender.sendMessage(Variable.Lang_YML.getString("AdminAddLevelSuccess"));
             return false;
         } else if (args.length == 4 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("setlevel")) {
@@ -778,12 +775,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                 try {
                     yamlConfiguration.save(f2);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            FirstBorderShaped.AddShapeBorder(Bukkit.getWorld(Variable.world_prefix + args[2]));
+            /* excluded FirstBorderShaped */
             sender.sendMessage(Variable.Lang_YML.getString("AdminSetLevelSuccess"));
             return false;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("export")) {
@@ -886,8 +883,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                     try {
                         f2.createNewFile();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(f2);
@@ -928,7 +925,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                     try {
                         yamlConfiguration.save(f2);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -951,7 +948,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                     try {
                         yamlConfiguration.save(f2);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -1023,8 +1020,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
             try {
                 yamlConfiguration.save(Variable.f_log);
-            } catch (IOException e2) {
-                e2.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             Object f;
@@ -1234,8 +1231,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                     try {
                         yamlConfiguration.save(Variable.f_log);
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     int nowID = yamlConfiguration.getInt("NowID");
@@ -1439,8 +1436,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             f2.createNewFile();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
                         YamlConfiguration yamlConfiguration1 = YamlConfiguration.loadConfiguration(f2);
@@ -1466,8 +1463,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration.save(Variable.f_log);
-                        } catch (IOException e2) {
-                            e2.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
                         yamlConfiguration1.set("Public", Main.JavaPlugin.getConfig().getBoolean("NormalPublic"));
@@ -1483,7 +1480,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration1.save(f2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -1491,8 +1488,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration.save(Variable.f_log);
-                        } catch (IOException e2) {
-                            e2.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
                         yamlConfiguration1.createSection("flowers");
@@ -1517,7 +1514,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             yamlConfiguration1.save(f2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -1529,7 +1526,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             world.setMonsterSpawnLimit(Main.JavaPlugin.getConfig().getInt("MaxSpawnAnimalsAmount"));
                         }
 
-                        FirstBorderShaped.ShapeBorder(world);
+                        /* excluded FirstBorderShaped */
                         sender.sendMessage(Variable.Lang_YML.getString("HeadLineTtitle"));
                         sender.sendMessage(Variable.Lang_YML.getString("AdminCreateHomeForPlayerSuccess"));
                         sender.sendMessage(Variable.Lang_YML.getString("BottomLineTtitle"));
@@ -2061,7 +2058,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                             if (Variable.hook_FastAsyncWorldEdit
                                                 && Main.JavaPlugin.getConfig().getBoolean("FaweSwitch")
                                                 && Main.JavaPlugin.getConfig().getBoolean("UpdateClearOld")) {
-                                                FirstBorderShaped.AddShapeBorder(p.getWorld());
+                                                /* excluded FirstBorderShaped */
                                             }
 
                                             sender.sendMessage(Variable.Lang_YML.getString("HeadLineTtitle"));
@@ -2183,7 +2180,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -2212,7 +2209,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             sender.sendMessage(temp);
                                             sender.sendMessage(Variable.Lang_YML.getString("BottomLineTtitle"));
-                                            FirstBorderShaped.AddShapeBorder(p.getWorld());
+                                            /* excluded FirstBorderShaped */
                                             if (Main.JavaPlugin.getConfig().getBoolean("BorderSwitch")) {
                                                 try {
                                                     World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
@@ -2465,7 +2462,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                     try {
                                         yamlConfiguration.save(Variable.f_log);
-                                    } catch (IOException e) {
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
@@ -2516,7 +2513,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         try {
                                             yamlConfiguration.save(Variable.f_log);
-                                        } catch (IOException e) {
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                         break;
@@ -2529,7 +2526,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                     try {
                                         yamlConfiguration.save(Variable.f_log);
-                                    } catch (IOException e) {
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
@@ -2545,15 +2542,15 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                 try {
                                     yamlConfiguration.save(Variable.f_log);
-                                } catch (IOException e2) {
-                                    e2.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
 
                                 yamlConfiguration.set("NowID", yamlConfiguration.getInt("NowID") - 1);
 
                                 try {
                                     yamlConfiguration.save(Variable.f_log);
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -2686,13 +2683,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                 try {
                                     gifts.add(ss.serializeItemStack(i));
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                                 try {
                                     home.setGifts(gifts);
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -2803,13 +2800,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                         try {
                             gifts.add(ss.serializeItemStack(i));
                             p.getInventory().remove(i);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         try {
                             home.setGifts(gifts);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -2860,7 +2857,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             home.setPopularity(home.getPopularity() + Integer.valueOf(args[3]));
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -2890,7 +2887,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             home.setFlowers(home.getFlowers() + Integer.valueOf(args[3]));
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -2964,7 +2961,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             home.setIcon(String.valueOf(i.getType().toString()) + ":" + i.getDurability());
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -3013,7 +3010,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                 try {
                                     home.setLimitBlock(list2);
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -3048,7 +3045,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                             try {
                                 home.setLimitBlock(list2);
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -3107,7 +3104,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             home.setLimitBlock(list2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -3170,7 +3167,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             home.setLimitBlock(list2);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -3248,7 +3245,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                         try {
                             home.setAdvertisement(adv);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -3359,7 +3356,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3391,7 +3388,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3452,7 +3449,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                     try {
                                         yamlConfiguration.save(f2);
-                                    } catch (IOException e) {
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
 
@@ -3509,7 +3506,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         try {
                                             home.setFlowers(home.getFlowers() + 1);
-                                        } catch (IOException e) {
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
 
@@ -3547,7 +3544,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         try {
                                             home.setFlowers(1);
-                                        } catch (IOException e) {
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
 
@@ -3715,7 +3712,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3734,7 +3731,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3796,7 +3793,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3809,7 +3806,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3865,7 +3862,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -3878,7 +3875,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             try {
                                                 yamlConfiguration.save(f2);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
@@ -4069,7 +4066,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         try {
                                             yamlConfiguration.save(f2);
-                                        } catch (IOException e) {
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
 
@@ -4139,7 +4136,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                 try {
                                                     yamlConfiguration.save(f2);
-                                                } catch (IOException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -4153,7 +4150,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                 try {
                                                     yamlConfiguration.save(f2);
-                                                } catch (IOException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -4207,7 +4204,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                 try {
                                                     yamlConfiguration.save(f2);
-                                                } catch (IOException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -4220,7 +4217,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                 try {
                                                     yamlConfiguration.save(f2);
-                                                } catch (IOException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -4255,7 +4252,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (HomeAPI.getHome(p.getWorld().getName()).isLocktime()) {
                                             try {
                                                 HomeAPI.getHome(p.getWorld().getName()).setLocktime(false);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -4287,7 +4284,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (HomeAPI.getHome(p.getWorld().getName()).isLockweather()) {
                                             try {
                                                 HomeAPI.getHome(p.getWorld().getName()).setLockweather(false);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -4410,7 +4407,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (HomeAPI.getHome(p.getWorld().getName()).isLockweather()) {
                                             try {
                                                 HomeAPI.getHome(p.getWorld().getName()).setLockweather(false);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -4517,7 +4514,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (HomeAPI.getHome(p.getWorld().getName()).isLocktime()) {
                                             try {
                                                 HomeAPI.getHome(p.getWorld().getName()).setLocktime(false);
-                                            } catch (IOException e) {
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -4707,7 +4704,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                     try {
                                                         yamlConfiguration.save(f2);
-                                                    } catch (IOException e) {
+                                                    } catch (Exception e) {
                                                         e.printStackTrace();
                                                     }
 
@@ -4810,7 +4807,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                         try {
                                                             yamlConfiguration.save(f2);
-                                                        } catch (IOException e) {
+                                                        } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
 
@@ -4899,13 +4896,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                         if (Main.JavaPlugin.getConfig().getString("DecideBy").equalsIgnoreCase("Player")) {
                                                             if (!MySQL.getLowerstLagServer().equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
                                                                 try {
-                                                                    Channel.waitToCommand(p, MySQL.getLowerstLagServer(), "sh create " + args[1]);
-                                                                } catch (IOException e) {
+                                                                    /* excluded Channel */
+                                                                } catch (Exception e) {
                                                                     e.printStackTrace();
                                                                 }
 
                                                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                                                Channel.sendPlayerToServer(p, MySQL.getLowerstLagServer());
+                                                                /* excluded Channel */
                                                                 return false;
                                                             }
                                                         } else if (!MySQL.getHighestTPSServer()
@@ -4928,13 +4925,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             if (MySQL.getServerAmount(MySQL.getLowerstLagServer()) != now) {
                                                                 try {
-                                                                    Channel.waitToCommand(p, MySQL.getHighestTPSServer(), "sh create " + args[1]);
-                                                                } catch (IOException e) {
+                                                                    /* excluded Channel */
+                                                                } catch (Exception e) {
                                                                     e.printStackTrace();
                                                                 }
 
                                                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                                                Channel.sendPlayerToServer(p, MySQL.getHighestTPSServer());
+                                                                /* excluded Channel */
                                                                 return false;
                                                             }
                                                         }
@@ -4951,8 +4948,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                     try {
                                                         yamlConfiguration.save(Variable.f_log);
-                                                    } catch (IOException e2) {
-                                                        e2.printStackTrace();
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
                                                     }
 
                                                     int nowID = yamlConfiguration.getInt("NowID");
@@ -5246,8 +5243,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             try {
                                                                 f2.createNewFile();
-                                                            } catch (IOException e1) {
-                                                                e1.printStackTrace();
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
                                                             }
 
                                                             YamlConfiguration yamlConfiguration1 = YamlConfiguration.loadConfiguration(f2);
@@ -5273,8 +5270,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             try {
                                                                 yamlConfiguration.save(Variable.f_log);
-                                                            } catch (IOException e2) {
-                                                                e2.printStackTrace();
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
                                                             }
 
                                                             yamlConfiguration1.set("Public", Main.JavaPlugin.getConfig().getBoolean("NormalPublic"));
@@ -5298,7 +5295,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             try {
                                                                 yamlConfiguration1.save(f2);
-                                                            } catch (IOException e) {
+                                                            } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
 
@@ -5306,8 +5303,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             try {
                                                                 yamlConfiguration.save(Variable.f_log);
-                                                            } catch (IOException e2) {
-                                                                e2.printStackTrace();
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
                                                             }
 
                                                             if (Main.JavaPlugin.getConfig().getInt("MaxSpawnMonstersAmount") != -1) {
@@ -5360,13 +5357,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                             try {
                                                                 yamlConfiguration1.save(f2);
-                                                            } catch (IOException e) {
+                                                            } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
 
                                                             Bukkit.dispatchCommand(p, "sh h");
                                                             p.teleport(world.getSpawnLocation());
-                                                            FirstBorderShaped.ShapeBorder(world);
+                                                            /* excluded FirstBorderShaped */
                                                             if (Main.JavaPlugin.getConfig().getBoolean("ClearInventoryBeforeCreate")) {
                                                                 p.getInventory().clear();
                                                                 p.sendMessage(Variable.Lang_YML.getString("ClearInventoryBeforeCreate"));
@@ -5500,7 +5497,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                                 try {
                                                                     yamlConfiguration.save(f2);
-                                                                } catch (IOException e) {
+                                                                } catch (Exception e) {
                                                                     e.printStackTrace();
                                                                 }
 
@@ -5602,7 +5599,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                         try {
                                                             yamlConfiguration.save(temp);
-                                                        } catch (IOException e) {
+                                                        } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
                                                         break label5439;
@@ -5689,7 +5686,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                         try {
                                                             yamlConfiguration.save(f2);
-                                                        } catch (IOException e) {
+                                                        } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
 
@@ -5905,7 +5902,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                         try {
                                                             yamlConfiguration.save(f2);
-                                                        } catch (IOException e) {
+                                                        } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
 
@@ -5927,7 +5924,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                                 try {
                                                     yamlConfiguration.save(f2);
-                                                } catch (IOException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -6415,13 +6412,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                             if (!MySQL.getLowerstLagServer().equalsIgnoreCase(MySQL.getServer(args[1]))
                                                 && MySQL.getServerAmount(MySQL.getLowerstLagServer()) != Bukkit.getOnlinePlayers().size()) {
                                                 try {
-                                                    Channel.waitToLoad(p, MySQL.getLowerstLagServer(), args[1]);
-                                                } catch (IOException e) {
+                                                    /* excluded Channel */
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
                                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                                Channel.sendPlayerToServer(p, MySQL.getLowerstLagServer());
+                                                /* excluded Channel */
                                                 return false;
                                             }
                                         } else if (!MySQL.getHighestTPSServer().equalsIgnoreCase(MySQL.getServer(args[1]))) {
@@ -6437,13 +6434,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                             if (MySQL.getServerAmount(MySQL.getLowerstLagServer()) != now) {
                                                 try {
-                                                    Channel.waitToLoad(p, MySQL.getHighestTPSServer(), args[1]);
-                                                } catch (IOException e) {
+                                                    /* excluded Channel */
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
                                                 p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                                Channel.sendPlayerToServer(p, MySQL.getHighestTPSServer());
+                                                /* excluded Channel */
                                                 return false;
                                             }
                                         }
@@ -6463,12 +6460,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         p.teleport(loc);
                                     } else {
                                         try {
-                                            Channel.waitDelayToSomeWhere(p, MySQL.getServer(args[1]), "sh v " + args[1]);
-                                        } catch (IOException e) {
+                                            /* excluded Channel */
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
 
-                                        Channel.sendPlayerToServer(p, MySQL.getServer(args[1]));
+                                        /* excluded Channel */
                                     }
                                 } else {
                                     String temp = Variable.Lang_YML.getString("TpNotExist");
@@ -6536,13 +6533,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (!MySQL.getLowerstLagServer().equalsIgnoreCase(MySQL.getServer(MySQL.getJoinHome(p.getName())))
                                             && MySQL.getServerAmount(MySQL.getLowerstLagServer()) != Bukkit.getOnlinePlayers().size()) {
                                             try {
-                                                Channel.waitToLoad(p, MySQL.getLowerstLagServer(), MySQL.getJoinHome(p.getName()));
-                                            } catch (IOException e) {
+                                                /* excluded Channel */
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
                                             p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                            Channel.sendPlayerToServer(p, MySQL.getLowerstLagServer());
+                                            /* excluded Channel */
                                             return false;
                                         }
                                     } else if (!MySQL.getHighestTPSServer().equalsIgnoreCase(MySQL.getServer(MySQL.getJoinHome(p.getName())))) {
@@ -6558,13 +6555,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         if (MySQL.getServerAmount(MySQL.getLowerstLagServer()) != now) {
                                             try {
-                                                Channel.waitToLoad(p, MySQL.getHighestTPSServer(), MySQL.getJoinHome(p.getName()));
-                                            } catch (IOException e) {
+                                                /* excluded Channel */
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
                                             p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                            Channel.sendPlayerToServer(p, MySQL.getHighestTPSServer());
+                                            /* excluded Channel */
                                             return false;
                                         }
                                     }
@@ -6572,12 +6569,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                 if (!MySQL.getJoinServer(p.getName()).equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
                                     try {
-                                        Channel.waitDelayToSomeWhere(p, MySQL.getJoinServer(p.getName()), "sh h");
-                                    } catch (IOException e) {
+                                        /* excluded Channel */
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
 
-                                    Channel.sendPlayerToServer(p, MySQL.getJoinServer(p.getName()));
+                                    /* excluded Channel */
                                     return false;
                                 }
                             }
@@ -6607,13 +6604,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                         if (!MySQL.getLowerstLagServer().equalsIgnoreCase(MySQL.getServer(p.getName()))
                                             && MySQL.getServerAmount(MySQL.getLowerstLagServer()) != Bukkit.getOnlinePlayers().size()) {
                                             try {
-                                                Channel.waitToLoad(p, MySQL.getLowerstLagServer(), p.getName());
-                                            } catch (IOException e) {
+                                                /* excluded Channel */
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
                                             p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                            Channel.sendPlayerToServer(p, MySQL.getLowerstLagServer());
+                                            /* excluded Channel */
                                             return false;
                                         }
                                     } else if (!MySQL.getHighestTPSServer().equalsIgnoreCase(MySQL.getServer(p.getName()))) {
@@ -6629,13 +6626,13 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                         if (MySQL.getServerAmount(MySQL.getLowerstLagServer()) != now) {
                                             try {
-                                                Channel.waitToLoad(p, MySQL.getHighestTPSServer(), p.getName());
-                                            } catch (IOException e) {
+                                                /* excluded Channel */
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
                                             p.sendMessage(Variable.Lang_YML.getString("StartLowestLagServer"));
-                                            Channel.sendPlayerToServer(p, MySQL.getHighestTPSServer());
+                                            /* excluded Channel */
                                             return false;
                                         }
                                     }
@@ -6643,12 +6640,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
 
                                 if (!MySQL.getServer(p.getName()).equalsIgnoreCase(Main.JavaPlugin.getConfig().getString("Server"))) {
                                     try {
-                                        Channel.waitDelayToSomeWhere(p, MySQL.getServer(p.getName()), "sh h");
-                                    } catch (IOException e) {
+                                        /* excluded Channel */
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
 
-                                    Channel.sendPlayerToServer(p, MySQL.getServer(p.getName()));
+                                    /* excluded Channel */
                                     return false;
                                 }
                             }

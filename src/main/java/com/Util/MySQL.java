@@ -3129,7 +3129,7 @@ public class MySQL {
 
     public static Connection getConnection() {
         try {
-            return HikariCPUtils.sqlConnectionPool.getConnection();
+            return null; /* HikariCP excluded */
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
