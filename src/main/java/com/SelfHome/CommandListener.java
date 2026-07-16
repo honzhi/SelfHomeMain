@@ -19,6 +19,7 @@ import org.mvplugins.multiverse.core.MultiverseCore;
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.WorldManager;
 import org.mvplugins.multiverse.core.world.MultiverseWorld;
+import org.mvplugins.multiverse.core.world.options.ImportWorldOptions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +60,38 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CommandListener implements CommandExecutor, TabExecutor {
+    private void configureMultiverseWorld(String worldName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            Main.JavaPlugin.getLogger().warning("Cannot configure missing Bukkit world in Multiverse-Core: " + worldName);
+            return;
+        }
+
+        WorldManager worldManager = MultiverseCoreApi.get().getWorldManager();
+        MultiverseWorld multiverseWorld = worldManager.getWorld(worldName).getOrNull();
+        if (multiverseWorld == null) {
+            multiverseWorld = worldManager
+                .importWorld(ImportWorldOptions.worldName(worldName).environment(world.getEnvironment()))
+                .getOrNull();
+        }
+
+        if (multiverseWorld == null) {
+            Main.JavaPlugin.getLogger().warning("Cannot register Bukkit world in Multiverse-Core: " + worldName);
+            return;
+        }
+
+        if (Main.JavaPlugin.getConfig().getBoolean("EnableChatPrefix")) {
+            String alias = Variable.Lang_YML.getString("PlaceHolders.WorldName");
+            if (alias != null) {
+                alias = alias.replace("<PlayerName>", worldName.replace(Variable.world_prefix, ""));
+                alias = alias.replace("<WorldName>", worldName.replace(Variable.world_prefix, ""));
+                multiverseWorld.setAlias(alias);
+            }
+        }
+
+        multiverseWorld.setAutoLoad(false);
+    }
+
     public void invite_guoqi(final Player p) {
         (new BukkitRunnable() {
             public void run() {
@@ -1321,83 +1354,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                     }
 
                     if (Variable.hook_multiverseCore) {
-                        String seed = Long.toString(Main.JavaPlugin.getConfig().getLong("Seed"));
-                        if (seed.equalsIgnoreCase("0")) {
-                            seed = "";
-                        }
-
-                        WorldManager mv_m = MultiverseCoreApi.get().getWorldManager();
-                        if (mv_m.isWorld(Variable.world_prefix + args[2])) {
-                            mv_m.removeWorld(Variable.world_prefix + args[2]);
-                        }
-
-                        if (v.equalsIgnoreCase("1")) {
-                            // mv_m.addWorld(
-
-                            //                                 Variable.world_prefix + args[2],
-
-                            //                                 Environment.NORMAL,
-
-                            //                                 seed,
-
-                            //                                 WorldType.NORMAL,
-
-                            //                                 Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                            //                                 ""
-
-                            //                             );
-                        } else if (v.equalsIgnoreCase("2")) {
-                            // mv_m.addWorld(
-
-                            //                                 Variable.world_prefix + args[2],
-
-                            //                                 Environment.NORMAL,
-
-                            //                                 seed,
-
-                            //                                 WorldType.FLAT,
-
-                            //                                 Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                            //                                 ""
-
-                            //                             );
-                        } else {
-                            // mv_m.addWorld(
-
-                            //                                 Variable.world_prefix + args[2],
-
-                            //                                 Environment.NORMAL,
-
-                            //                                 seed,
-
-                            //                                 WorldType.NORMAL,
-
-                            //                                 Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                            //                                 ""
-
-                            //                             );
-                        }
-
-                        if (Main.JavaPlugin.getConfig().getBoolean("EnableChatPrefix")) {
-                            MultiverseWorld mv = mv_m.getWorld(Variable.world_prefix + args[2]).getOrNull();
-                            World world = Bukkit.getWorld(Variable.world_prefix + args[2]);
-                            String temp = Variable.Lang_YML.getString("PlaceHolders.WorldName");
-                            if (temp.contains("<PlayerName>")) {
-                                temp = temp.replace("<PlayerName>", world.getName().replace(Variable.world_prefix, ""));
-                            }
-
-                            if (temp.contains("<WorldName>")) {
-                                temp = temp.replace("<WorldName>", world.getName().replace(Variable.world_prefix, ""));
-                            }
-
-                            mv.setAlias(temp);
-                        }
-
-                        MultiverseWorld mv = mv_m.getWorld(Variable.world_prefix + args[2]).getOrNull();
-                        mv.setAutoLoad(false);
+                        configureMultiverseWorld(Variable.world_prefix + args[2]);
                     }
 
                     World world = Bukkit.getWorld(Variable.world_prefix + args[2]);
@@ -5074,86 +5031,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                         }
 
                                                         if (Variable.hook_multiverseCore) {
-                                                            String seed = Long.toString(Main.JavaPlugin.getConfig().getLong("Seed"));
-                                                            if (seed.equalsIgnoreCase("0")) {
-                                                                seed = "";
-                                                            }
-
-                                                            MultiverseCore mvcore = (MultiverseCore)Bukkit.getServer()
-                                                                .getPluginManager()
-                                                                .getPlugin("Multiverse-Core");
-                                                            WorldManager mv_m = MultiverseCoreApi.get().getWorldManager();
-                                                            if (mv_m.isWorld(Variable.world_prefix + p.getName())) {
-                                                                mv_m.removeWorld(Variable.world_prefix + p.getName());
-                                                            }
-
-                                                            if (v.equalsIgnoreCase("1")) {
-                                                                // mv_m.addWorld(
-
-                                                                //                                                                     Variable.world_prefix + p.getName(),
-
-                                                                //                                                                     Environment.NORMAL,
-
-                                                                //                                                                     seed,
-
-                                                                //                                                                     WorldType.NORMAL,
-
-                                                                //                                                                     Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                                                                //                                                                     ""
-
-                                                                //                                                                 );
-                                                            } else if (v.equalsIgnoreCase("2")) {
-                                                                // mv_m.addWorld(
-
-                                                                //                                                                     Variable.world_prefix + p.getName(),
-
-                                                                //                                                                     Environment.NORMAL,
-
-                                                                //                                                                     seed,
-
-                                                                //                                                                     WorldType.FLAT,
-
-                                                                //                                                                     Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                                                                //                                                                     ""
-
-                                                                //                                                                 );
-                                                            } else {
-                                                                // mv_m.addWorld(
-
-                                                                //                                                                     Variable.world_prefix + p.getName(),
-
-                                                                //                                                                     Environment.NORMAL,
-
-                                                                //                                                                     seed,
-
-                                                                //                                                                     WorldType.NORMAL,
-
-                                                                //                                                                     Main.JavaPlugin.getConfig().getBoolean("generateStructures"),
-
-                                                                //                                                                     ""
-
-                                                                //                                                                 );
-                                                            }
-
-                                                            if (Main.JavaPlugin.getConfig().getBoolean("EnableChatPrefix")) {
-                                                                MultiverseWorld mv = mv_m.getWorld(Variable.world_prefix + p.getName()).getOrNull();
-                                                                World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
-                                                                String temp = Variable.Lang_YML.getString("PlaceHolders.WorldName");
-                                                                if (temp.contains("<PlayerName>")) {
-                                                                    temp = temp.replace("<PlayerName>", world.getName().replace(Variable.world_prefix, ""));
-                                                                }
-
-                                                                if (temp.contains("<WorldName>")) {
-                                                                    temp = temp.replace("<WorldName>", world.getName().replace(Variable.world_prefix, ""));
-                                                                }
-
-                                                                mv.setAlias(temp);
-                                                            }
-
-                                                            MultiverseWorld mv = mv_m.getWorld(Variable.world_prefix + p.getName()).getOrNull();
-                                                            mv.setAutoLoad(false);
+                                                            configureMultiverseWorld(Variable.world_prefix + p.getName());
                                                         }
 
                                                         World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
