@@ -1431,7 +1431,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                     }
 
                     World world = Bukkit.getWorld(Variable.world_prefix + args[2]);
-                    configureTemplateSpawn(v, world);
+                    Location homeSpawn = configureTemplateSpawn(v, world);
                     if (Variable.hook_multiverseCore) {
                         configureMultiverseWorld(Variable.world_prefix + args[2]);
                     }
@@ -1451,9 +1451,9 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                             "false",
                             "false",
                             "0",
-                            String.valueOf(world.getSpawnLocation().getX()),
-                            String.valueOf(world.getSpawnLocation().getY()),
-                            String.valueOf(world.getSpawnLocation().getZ()),
+                            String.valueOf(homeSpawn.getX()),
+                            String.valueOf(homeSpawn.getY()),
+                            String.valueOf(homeSpawn.getZ()),
                             "0",
                             "0",
                             "",
@@ -1544,7 +1544,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                         yamlConfiguration1.createSection("X");
                         yamlConfiguration1.createSection("Y");
                         yamlConfiguration1.createSection("Z");
-                        Location loc = world.getSpawnLocation();
+                        Location loc = homeSpawn;
                         yamlConfiguration1.set("X", loc.getX());
                         yamlConfiguration1.set("Y", loc.getY());
                         yamlConfiguration1.set("Z", loc.getZ());
@@ -5109,7 +5109,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                         }
 
                                                         World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
-                                                        configureTemplateSpawn(v, world);
+                                                        Location homeSpawn = configureTemplateSpawn(v, world);
                                                         if (Variable.hook_multiverseCore) {
                                                             configureMultiverseWorld(Variable.world_prefix + p.getName());
                                                         }
@@ -5162,9 +5162,9 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                                 "false",
                                                                 "false",
                                                                 "0",
-                                                                String.valueOf(world.getSpawnLocation().getX()),
-                                                                String.valueOf(world.getSpawnLocation().getY()),
-                                                                String.valueOf(world.getSpawnLocation().getZ()),
+                                                                String.valueOf(homeSpawn.getX()),
+                                                                String.valueOf(homeSpawn.getY()),
+                                                                String.valueOf(homeSpawn.getZ()),
                                                                 "0",
                                                                 "0",
                                                                 "",
@@ -5298,7 +5298,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                             yamlConfiguration1.createSection("X");
                                                             yamlConfiguration1.createSection("Y");
                                                             yamlConfiguration1.createSection("Z");
-                                                            Location loc = world.getSpawnLocation();
+                                                            Location loc = homeSpawn;
                                                             yamlConfiguration1.set("X", loc.getX());
                                                             yamlConfiguration1.set("Y", loc.getY());
                                                             yamlConfiguration1.set("Z", loc.getZ());
@@ -5322,7 +5322,8 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                             }
 
                                                             Bukkit.dispatchCommand(p, "sh h");
-                                                            p.teleport(world.getSpawnLocation());
+                                                            Location correctedSpawn = homeSpawn.clone();
+                                                            Bukkit.getScheduler().runTaskLater(Main.JavaPlugin, () -> p.teleport(correctedSpawn), 1L);
                                                             /* excluded FirstBorderShaped */
                                                             if (Main.JavaPlugin.getConfig().getBoolean("ClearInventoryBeforeCreate")) {
                                                                 p.getInventory().clear();
