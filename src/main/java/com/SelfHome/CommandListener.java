@@ -60,6 +60,43 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CommandListener implements CommandExecutor, TabExecutor {
+    private Location configureTemplateSpawn(String templateName, World world) {
+        if (world == null) {
+            return null;
+        }
+
+        Location originalSpawn = world.getSpawnLocation();
+        String path = "TemplateSpawn." + templateName;
+        if (!Main.JavaPlugin.getConfig().isConfigurationSection(path)) {
+            return originalSpawn;
+        }
+
+        Location templateSpawn = new Location(
+            world,
+            Main.JavaPlugin.getConfig().getDouble(path + ".X", originalSpawn.getX()),
+            Main.JavaPlugin.getConfig().getDouble(path + ".Y", originalSpawn.getY()),
+            Main.JavaPlugin.getConfig().getDouble(path + ".Z", originalSpawn.getZ()),
+            (float)Main.JavaPlugin.getConfig().getDouble(path + ".Yaw", originalSpawn.getYaw()),
+            (float)Main.JavaPlugin.getConfig().getDouble(path + ".Pitch", originalSpawn.getPitch())
+        );
+        templateSpawn.getChunk().load();
+
+        boolean outsideWorld = templateSpawn.getY() < world.getMinHeight() || templateSpawn.getY() + 1 >= world.getMaxHeight();
+        boolean blocked = !outsideWorld
+            && (!templateSpawn.getBlock().isPassable()
+                || !templateSpawn.clone().add(0.0, 1.0, 0.0).getBlock().isPassable()
+                || templateSpawn.clone().subtract(0.0, 1.0, 0.0).getBlock().isPassable());
+        if (outsideWorld || blocked) {
+            Main.JavaPlugin
+                .getLogger()
+                .warning("Unsafe template spawn for " + templateName + ", using level.dat spawn instead: " + templateSpawn);
+            return originalSpawn;
+        }
+
+        world.setSpawnLocation(templateSpawn);
+        return templateSpawn;
+    }
+
     private void configureMultiverseWorld(String worldName) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
@@ -580,6 +617,46 @@ public class CommandListener implements CommandExecutor, TabExecutor {
             sender.sendMessage(Variable.Lang_YML.getString("HeadLineTtitle"));
             sender.sendMessage(Variable.Lang_YML.getString("ReloadSuccess"));
             sender.sendMessage(Variable.Lang_YML.getString("BottomLineTtitle"));
+            return false;
+        } else if (args.length >= 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("resetdelete")) {
+            if (!sender.hasPermission("SelfHome.Admin.ResetDelete")) {
+                sender.sendMessage(Variable.Lang_YML.getString("PlayerIsNotOperator"));
+                return false;
+            }
+
+            if (args.length != 3) {
+                sender.sendMessage(Variable.Lang_YML.getString("ResetDeleteUsage"));
+                return false;
+            }
+
+            String playerName = args[2];
+            YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(Variable.f_log);
+            List<String> deleteTimes = new ArrayList<>(yamlConfiguration.getStringList("DeleteTimes"));
+            boolean removed = false;
+            for (int i = deleteTimes.size() - 1; i >= 0; i--) {
+                String[] entry = deleteTimes.get(i).split(",", 2);
+                if (entry.length > 0 && entry[0].equalsIgnoreCase(playerName)) {
+                    deleteTimes.remove(i);
+                    removed = true;
+                }
+            }
+
+            String messageKey = "ResetDeleteNotFound";
+            if (removed) {
+                yamlConfiguration.set("DeleteTimes", deleteTimes);
+                try {
+                    yamlConfiguration.save(Variable.f_log);
+                    messageKey = "ResetDeleteSuccess";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    messageKey = "ResetDeleteSaveFailed";
+                }
+            }
+
+            String message = Variable.Lang_YML.getString(messageKey);
+            if (message != null) {
+                sender.sendMessage(message.replace("<PlayerName>", playerName));
+            }
             return false;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("setspawn")) {
             if (sender instanceof Player) {
@@ -1353,11 +1430,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                         Bukkit.createWorld(creator);
                     }
 
+                    World world = Bukkit.getWorld(Variable.world_prefix + args[2]);
+                    configureTemplateSpawn(v, world);
                     if (Variable.hook_multiverseCore) {
                         configureMultiverseWorld(Variable.world_prefix + args[2]);
                     }
 
-                    World world = Bukkit.getWorld(Variable.world_prefix + args[2]);
                     if (Variable.bungee) {
                         MySQL.insertvalue(
                             args[2],
@@ -5030,11 +5108,12 @@ public class CommandListener implements CommandExecutor, TabExecutor {
                                                             World var1030 = Bukkit.createWorld(creator);
                                                         }
 
+                                                        World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
+                                                        configureTemplateSpawn(v, world);
                                                         if (Variable.hook_multiverseCore) {
                                                             configureMultiverseWorld(Variable.world_prefix + p.getName());
                                                         }
 
-                                                        World world = Bukkit.getWorld(Variable.world_prefix + p.getName());
                                                         if (!Main.JavaPlugin.getConfig().getBoolean("KeepInventory")) {
                                                             world.setGameRuleValue("keepInventory", "false");
                                                         } else if (Main.JavaPlugin.getConfig().getBoolean("KeepInventory")) {
@@ -6809,6 +6888,7 @@ public class CommandListener implements CommandExecutor, TabExecutor {
             if (args[0].equalsIgnoreCase("admin")) {
                 List<String> list = new ArrayList<>();
                 list.add("setSpawn");
+                list.add("resetDelete");
                 list.add("dimension");
                 list.add("export");
                 list.add("import");
@@ -6846,7 +6926,21 @@ public class CommandListener implements CommandExecutor, TabExecutor {
             }
         }
 
-        if (args.length == 3 && args[0].equalsIgnoreCase("gift") && args[1].equalsIgnoreCase("send")) {
+        if (args.length == 3 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("resetdelete")) {
+            List<String> list = new ArrayList<>();
+            if (!sender.hasPermission("SelfHome.Admin.ResetDelete")) {
+                return list;
+            }
+
+            YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(Variable.f_log);
+            for (String deleteTime : yamlConfiguration.getStringList("DeleteTimes")) {
+                String[] entry = deleteTime.split(",", 2);
+                if (entry.length > 0 && !entry[0].isEmpty()) {
+                    list.add(entry[0]);
+                }
+            }
+            return list;
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("gift") && args[1].equalsIgnoreCase("send")) {
             List<String> list = new ArrayList<>();
 
             for (Player p : Bukkit.getOnlinePlayers()) {

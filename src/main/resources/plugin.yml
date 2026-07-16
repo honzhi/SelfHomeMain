@@ -8,3 +8,7 @@ commands:
   SH:
     description: example
     permission-message: You don't have permission use this Commands
+permissions:
+  SelfHome.Admin.ResetDelete:
+    description: Allows resetting a player's home deletion count
+    default: op

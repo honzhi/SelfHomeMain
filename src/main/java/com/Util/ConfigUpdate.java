@@ -1041,6 +1041,66 @@ public class ConfigUpdate {
             config_check = true;
         }
 
+        if (!Main.JavaPlugin.getConfig().isConfigurationSection("TemplateSpawn.sky_blokc_mb1")) {
+            Main.JavaPlugin.getConfig().set("TemplateSpawn.sky_blokc_mb1.X", 0.5);
+            Main.JavaPlugin.getConfig().set("TemplateSpawn.sky_blokc_mb1.Y", -59.0);
+            Main.JavaPlugin.getConfig().set("TemplateSpawn.sky_blokc_mb1.Z", 0.5);
+            Main.JavaPlugin.getConfig().set("TemplateSpawn.sky_blokc_mb1.Yaw", 0.0);
+            Main.JavaPlugin.getConfig().set("TemplateSpawn.sky_blokc_mb1.Pitch", 0.0);
+            config_check = true;
+        }
+
+        String language = Main.JavaPlugin.getConfig().getString("Language", "Chinese");
+        boolean english = language.equalsIgnoreCase("English");
+        boolean traditionalChinese = language.equalsIgnoreCase("Chinese_TW");
+        if (Variable.Lang_YML.getString("ResetDeleteUsage") == null) {
+            Variable.Lang_YML.set(
+                "ResetDeleteUsage",
+                english
+                    ? "§7[SelfHomeMain]➢ §cUsage: /sh admin resetdelete <player>"
+                    : traditionalChinese
+                        ? "§7[SelfHomeMain]➢ §c用法: /sh admin resetdelete <玩家名稱>"
+                        : "§8[§6SelfHomeMain§8] §c用法: /sh admin resetdelete <玩家名>"
+            );
+            lang_check = true;
+        }
+
+        if (Variable.Lang_YML.getString("ResetDeleteSuccess") == null) {
+            Variable.Lang_YML.set(
+                "ResetDeleteSuccess",
+                english
+                    ? "§7[SelfHomeMain]➢ §aReset <PlayerName>'s home deletion count to 0."
+                    : traditionalChinese
+                        ? "§7[SelfHomeMain]➢ §a已將玩家 <PlayerName> 的家園刪除次數重置為 0。"
+                        : "§8[§6SelfHomeMain§8] §a已将玩家 <PlayerName> 的家园删除次数重置为 0。"
+            );
+            lang_check = true;
+        }
+
+        if (Variable.Lang_YML.getString("ResetDeleteNotFound") == null) {
+            Variable.Lang_YML.set(
+                "ResetDeleteNotFound",
+                english
+                    ? "§7[SelfHomeMain]➢ §e<PlayerName>'s home deletion count is already 0."
+                    : traditionalChinese
+                        ? "§7[SelfHomeMain]➢ §e玩家 <PlayerName> 的家園刪除次數已經是 0。"
+                        : "§8[§6SelfHomeMain§8] §e玩家 <PlayerName> 的家园删除次数已经是 0。"
+            );
+            lang_check = true;
+        }
+
+        if (Variable.Lang_YML.getString("ResetDeleteSaveFailed") == null) {
+            Variable.Lang_YML.set(
+                "ResetDeleteSaveFailed",
+                english
+                    ? "§7[SelfHomeMain]➢ §cFailed to save <PlayerName>'s home deletion count."
+                    : traditionalChinese
+                        ? "§7[SelfHomeMain]➢ §c儲存玩家 <PlayerName> 的家園刪除次數失敗。"
+                        : "§8[§6SelfHomeMain§8] §c保存玩家 <PlayerName> 的家园删除次数失败。"
+            );
+            lang_check = true;
+        }
+
         if (config_check) {
             Main.JavaPlugin.getConfig().set("Version", 2.1);
             Main.JavaPlugin.saveConfig();
